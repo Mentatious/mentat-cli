@@ -17,7 +17,7 @@ import (
 )
 
 // ImportDelicious ... import file with Delicious exported bookmarks
-func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, log *zap.SugaredLogger, quiet bool) {
+func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, userID string, log *zap.SugaredLogger, quiet bool) {
 	xmlFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("%s, exiting...", err)
@@ -48,6 +48,7 @@ func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, log *zap.Sug
 			From:            "delicious",
 		}
 		rpcResp, err := rpcClient.CallNamed("entry.Add", map[string]interface{}{
+			"userid":   userID,
 			"type":     "bookmark",
 			"content":  link,
 			"tags":     tags,
@@ -84,7 +85,7 @@ func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, log *zap.Sug
 }
 
 // ImportPocket ... import file with Pocket exported bookmarks
-func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, log *zap.SugaredLogger, quiet bool) {
+func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, userID string, log *zap.SugaredLogger, quiet bool) {
 	htmlFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("%s, exiting...", err)
@@ -121,6 +122,7 @@ func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, log *zap.Sugare
 			From:            "pocket",
 		}
 		rpcResp, err := rpcClient.CallNamed("entry.Add", map[string]interface{}{
+			"userid":   userID,
 			"type":     "bookmark",
 			"content":  link,
 			"tags":     tags,

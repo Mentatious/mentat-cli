@@ -44,6 +44,7 @@ func main() {
 
 	app := kingpin.New("mentat-cli", "Mentat command line client")
 	APIHost := app.Flag("apihost", "API host address").Short('a').String()
+	User := app.Flag("user", "Free-form user ID to associate imported entries with").Short('u').String()
 	Quiet := app.Flag("quiet", "Be quiet").Short('q').Bool()
 	importCommand := app.Command("import", "Import data into Mentat DB")
 	importDeliciousCommand := importCommand.Command("delicious", "Import Delicious bookmarks dump data")
@@ -67,9 +68,9 @@ func main() {
 	rpcClient := jsonrpc.NewRPCClient(apiserverURL)
 	switch parsedParams {
 	case importDeliciousCommand.FullCommand():
-		importers.ImportDelicious(*importFile, rpcClient, log, *Quiet)
+		importers.ImportDelicious(*importFile, rpcClient, *User, log, *Quiet)
 	case importPocketCommand.FullCommand():
-		importers.ImportPocket(*importFile, rpcClient, log, *Quiet)
+		importers.ImportPocket(*importFile, rpcClient, *User, log, *Quiet)
 	default:
 		fmt.Printf("Unknown dump format, exiting...")
 		os.Exit(1)
