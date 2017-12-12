@@ -43,34 +43,35 @@ func main() {
 	}()
 
 	app := kingpin.New("mentat-cli", "Mentat command line client")
+	APIHost := app.Flag("apihost", "API host address").Short('a').String()
+	Quiet := app.Flag("quiet", "Be quiet").Short('q').Bool()
 	importCommand := app.Command("import", "Import data into Mentat DB")
-	importFormat := importCommand.Flag("type", "Type of data to import").Short('t').String()
+	importDeliciousCommand := importCommand.Command("delicious", "Import Delicious bookmarks dump data")
+	importPocketCommand := importCommand.Command("pocket", "Import Pocket bookmarks dump data")
 	importFile := importCommand.Flag("file", "File to import from").Short('f').String()
-	importAPIHost := importCommand.Flag("apihost", "API host address").Short('a').String()
-	importQuiet := importCommand.Flag("quiet", "Be quiet").Short('q').Bool()
 
-	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
-	case importCommand.FullCommand():
-		if *importAPIHost == "" {
-			fmt.Printf("No API host provided, exiting...")
-			os.Exit(1)
-		} else {
-			apiHostCheck, err := http.Get(fmt.Sprintf("http://%s", *importAPIHost))
-			if err != nil {
-				fmt.Printf("Cannot dial %s, exiting... (%s)", *importAPIHost, err.Error())
-				os.Exit(1)
-			}
-			defer apiHostCheck.Body.Close()
-		}
-		apiserverURL := fmt.Sprintf("http://%s/mentat/v1/", *importAPIHost)
-		rpcClient := jsonrpc.NewRPCClient(apiserverURL)
-		if *importFormat == "delicious" {
-			importers.ImportDelicious(*importFile, rpcClient, log, *importQuiet)
-		} else if *importFormat == "pocket" {
-			importers.ImportPocket(*importFile, rpcClient, log, *importQuiet)
-		} else {
-			fmt.Printf("Unknown dump format: '%s', exiting...", *importFormat)
+	parsedParams := kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	if *APIHost == "" {
+		fmt.Printf("No API host provided, exiting...")
+		os.Exit(1)
+	} else {
+		apiHostCheck, err := http.Get(fmt.Sprintf("http://%s", *APIHost))
+		if err != nil {
+			fmt.Printf("Cannot dial %s, exiting... (%s)", *APIHost, err.Error())
 			os.Exit(1)
 		}
+		defer apiHostCheck.Body.Close()
+	}
+	apiserverURL := fmt.Sprintf("http://%s/mentat/v1/", *APIHost)
+	rpcClient := jsonrpc.NewRPCClient(apiserverURL)
+	switch parsedParams {
+	case importDeliciousCommand.FullCommand():
+		importers.ImportDelicious(*importFile, rpcClient, log, *Quiet)
+	case importPocketCommand.FullCommand():
+		importers.ImportPocket(*importFile, rpcClient, log, *Quiet)
+	default:
+		fmt.Printf("Unknown dump format, exiting...")
+		os.Exit(1)
 	}
 }
