@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/Mentatious/mentat-cli/importers"
+	"github.com/wiedzmin/goodies"
 	"github.com/ybbus/jsonrpc"
-	"go.uber.org/zap"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"net/http"
 	"os"
@@ -12,28 +12,8 @@ import (
 	"syscall"
 )
 
-// InitLogging ... Initialize loggers
-func InitLogging(debug bool, showLoc bool) (*zap.Logger, *zap.SugaredLogger) {
-	var rawlog *zap.Logger
-	var log *zap.SugaredLogger
-	var cfg zap.Config
-	var err error
-	if debug {
-		cfg = zap.NewDevelopmentConfig()
-	} else {
-		cfg = zap.NewProductionConfig()
-	}
-	cfg.DisableCaller = !showLoc
-	rawlog, err = cfg.Build()
-	if err != nil {
-		panic(err)
-	}
-	log = rawlog.Sugar()
-	return rawlog, log
-}
-
 func main() {
-	_, log := InitLogging(false, false)
+	_, log := goodies.InitLogging(false, false)
 	c := make(chan os.Signal, 2)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
