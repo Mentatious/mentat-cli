@@ -43,8 +43,8 @@ func main() {
 	}()
 
 	app := kingpin.New("mentat-cli", "Mentat command line client")
-	APIHost := app.Flag("apihost", "API host address").Short('a').String()
-	User := app.Flag("user", "Free-form user ID to associate imported entries with").Short('u').String()
+	APIHost := app.Flag("apihost", "API host address").Short('a').Required().String()
+	User := app.Flag("user", "Free-form user ID to associate imported entries with").Short('u').Required().String()
 	Quiet := app.Flag("quiet", "Be quiet").Short('q').Bool()
 	importCommand := app.Command("import", "Import data into Mentat DB")
 	importDeliciousCommand := importCommand.Command("delicious", "Import Delicious bookmarks dump data")
