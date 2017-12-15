@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"github.com/Mentatious/mentat-cli/io"
 	"github.com/Mentatious/mentat-cli/schema"
 	"github.com/ybbus/jsonrpc"
 	"github.com/yhat/scrape"
-	"go.uber.org/zap"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"io/ioutil"
@@ -17,7 +17,8 @@ import (
 )
 
 // ImportDelicious ... import file with Delicious exported bookmarks
-func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, userID string, log *zap.SugaredLogger, quiet bool) {
+func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, userID string, quiet bool) {
+	log := io.GetLog()
 	xmlFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("%s, exiting...", err)
@@ -85,7 +86,8 @@ func ImportDelicious(filename string, rpcClient *jsonrpc.RPCClient, userID strin
 }
 
 // ImportPocket ... import file with Pocket exported bookmarks
-func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, userID string, log *zap.SugaredLogger, quiet bool) {
+func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, userID string, quiet bool) {
+	log := io.GetLog()
 	htmlFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("%s, exiting...", err)
@@ -159,5 +161,5 @@ func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, userID string, 
 }
 
 // ImportOrg ... import Org-mode file
-func ImportOrg(filename string, rpcClient *jsonrpc.RPCClient, log *zap.SugaredLogger) {
+func ImportOrg(filename string, rpcClient *jsonrpc.RPCClient) {
 }
