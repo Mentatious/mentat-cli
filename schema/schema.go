@@ -1,7 +1,7 @@
 package schema
 
 // Posts ... root data element for Delicious links list
-type Posts struct {
+type Posts struct { // TODO: think of renaming (to more semantically descriptive name)
 	PostsList []Post `xml:"post"`
 	User      string `xml:"user,attr"`
 	Update    string `xml:"update,attr"`
@@ -10,7 +10,7 @@ type Posts struct {
 }
 
 // Post ... link's data layout
-type Post struct {
+type Post struct { // TODO: think of renaming (to more semantically descriptive name)
 	Href        string `xml:"href,attr"`
 	Description string `xml:"description,attr"`
 	Tags        string `xml:"tag,attr"`
@@ -21,7 +21,7 @@ type Post struct {
 }
 
 // PostMetadata ... metadata for post
-type PostMetadata struct {
+type PostMetadata struct { // TODO: think of renaming (to more semantically descriptive name)
 	Description     string
 	TimeAddedOrigin string
 	HashOrigin      string
