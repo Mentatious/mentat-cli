@@ -30,6 +30,14 @@ func main() {
 	importDeliciousCommand := importCommand.Command("delicious", "Import Delicious bookmarks dump data")
 	importPocketCommand := importCommand.Command("pocket", "Import Pocket bookmarks dump data")
 	importFile := importCommand.Flag("file", "File to import from").Short('f').String()
+	searchCommand := app.Command("search", "Search the saved data corpus")
+	searchQuery := app.Flag("query", "Raw JSON query to API").Short('r').String()
+	searchResultsFormat := app.Flag("format", "Results format, e.g. raw, json, etc").Short('x').String()
+	searchOutput := app.Flag("output", "File to save results to").Short('o').Default("stdout").String()
+	searchTypes := app.Flag("types", "Comma-separated list of entry types to search for").Short('t').String()
+	searchContent := app.Flag("content", "Comma-separated list of entry types to search for").Short('c').String()
+	searchTags := app.Flag("tags", "Comma-separated list of tags to search for").Short('T').String()
+	searchPrio := app.Flag("prio", "Comma-separated list of priority values to search for").Short('p').String()
 
 	parsedParams := kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -52,8 +60,13 @@ func main() {
 	case importPocketCommand.FullCommand():
 		importers.ImportPocket(*importFile, rpcClient, *User, *Quiet)
 	case searchCommand.FullCommand():
-		results := commands.Search(rpcClient, *User, *searchTypes, *searchContent, *searchTags, *searchPrio) // TODO: implement query parsing
-		format.DumpJSON(results)
+		results := commands.Search(rpcClient, *User, *searchTypes, *searchContent, *searchTags, *searchPrio, *searchQuery)
+		switch *searchResultsFormat {
+		case "json":
+			format.DumpJSON(results, *searchOutput)
+		default:
+			fmt.Printf("No export format provided, dumping raw contents:\n%v", results)
+		}
 	default:
 		fmt.Printf("Unknown dump format, exiting...")
 		os.Exit(1)
