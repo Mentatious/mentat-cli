@@ -1,4 +1,4 @@
-package importers
+package commands
 
 import (
 	"bytes"

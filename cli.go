@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/Mentatious/mentat-cli/commands"
 	"github.com/Mentatious/mentat-cli/io/format"
-	"github.com/Mentatious/mentat-cli/io/importers"
 	"github.com/ybbus/jsonrpc"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"net/http"
@@ -56,9 +55,9 @@ func main() {
 	rpcClient := jsonrpc.NewRPCClient(apiserverURL)
 	switch parsedParams {
 	case importDeliciousCommand.FullCommand():
-		importers.ImportDelicious(*importFile, rpcClient, *User, *Quiet)
+		commands.ImportDelicious(*importFile, rpcClient, *User, *Quiet)
 	case importPocketCommand.FullCommand():
-		importers.ImportPocket(*importFile, rpcClient, *User, *Quiet)
+		commands.ImportPocket(*importFile, rpcClient, *User, *Quiet)
 	case searchCommand.FullCommand():
 		results := commands.Search(rpcClient, *User, *searchTypes, *searchContent, *searchTags, *searchPrio, *searchQuery)
 		switch *searchResultsFormat {
