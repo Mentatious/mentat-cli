@@ -64,6 +64,8 @@ func main() {
 		switch *searchResultsFormat {
 		case "json":
 			format.DumpJSON(results, *searchOutput)
+		case "csv":
+			format.DumpCSV(results, *searchOutput)
 		default:
 			fmt.Printf("No export format provided, dumping raw contents:\n%v", results)
 		}
