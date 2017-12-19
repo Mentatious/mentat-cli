@@ -37,6 +37,10 @@ func main() {
 	searchContent := app.Flag("content", "Comma-separated list of entry types to search for").Short('c').String()
 	searchTags := app.Flag("tags", "Comma-separated list of tags to search for").Short('T').String()
 	searchPrio := app.Flag("prio", "Comma-separated list of priority values to search for").Short('p').String()
+	deleteCommand := app.Command("delete", "delete entries from Mentat DB")
+	deleteUUIDs := deleteCommand.Flag("uuids", "Comma-separated list of UUIDs of entries to delete").Short('i').String()
+	cleanupCommand := app.Command("cleanup", "cleanup Mentat DB (type-wise)")
+	cleanupTypes := cleanupCommand.Flag("type", "types of entries to cleanup").Short('s').String()
 
 	parsedParams := kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -68,6 +72,14 @@ func main() {
 		default:
 			fmt.Printf("No export format provided, dumping raw contents:\n%v", results)
 		}
+	case deleteCommand.FullCommand():
+		var deleted int
+		commands.Delete(rpcClient, *User, *deleteUUIDs, &deleted)
+		fmt.Printf("deleted %d entries: OK", deleted)
+	case cleanupCommand.FullCommand():
+		var deleted int
+		commands.Cleanup(rpcClient, *User, *cleanupTypes, &deleted)
+		fmt.Printf("cleaned up %d entries: OK", deleted)
 	default:
 		fmt.Printf("Unknown dump format, exiting...")
 		os.Exit(1)

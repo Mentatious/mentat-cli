@@ -65,3 +65,15 @@ type SearchResponse struct {
 	Count   int
 	Entries []Entry
 }
+
+// DeleteResponse ... JSON-RPC response for Delete method
+type DeleteResponse struct {
+	Error   string
+	Deleted int
+}
+
+// CleanupResponse ... JSON-RPC response for Cleanup method
+type CleanupResponse struct {
+	Error   string
+	Deleted int
+}
