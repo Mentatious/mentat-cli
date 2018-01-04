@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/Mentatious/mentat-cli/io"
 	"github.com/Mentatious/mentat-cli/schema"
 	"github.com/ybbus/jsonrpc"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
-	"io/ioutil"
-	"os"
-	"strings"
-	"time"
 )
 
 // ImportDelicious ... import file with Delicious exported bookmarks
@@ -163,3 +164,24 @@ func ImportPocket(filename string, rpcClient *jsonrpc.RPCClient, userID string, 
 // ImportOrg ... import Org-mode file
 func ImportOrg(filename string, rpcClient *jsonrpc.RPCClient) {
 }
+
+// import from Facebook saved links (first export to html)
+// #!/usr/bin/env ruby
+
+// require 'nokogiri'
+// require 'uri'
+// require 'cgi'
+
+// input_file = ARGV[0]
+
+// page = Nokogiri.HTML(File.read(input_file))
+// page.xpath("//div[@class='_4bl9 _5yjp']").each() do |d|
+// 	raw_link = d.xpath("a")[0].attributes["href"].value
+//     link = URI(raw_link)
+//     query_string = link.query
+//     if query_string.nil?
+//     puts link
+//     else
+//     puts CGI.parse(query_string)["u"]
+//     end
+// end

@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/Mentatious/mentat-cli/commands"
-	"github.com/Mentatious/mentat-cli/io/format"
-	"github.com/ybbus/jsonrpc"
-	"gopkg.in/alecthomas/kingpin.v2"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/Mentatious/mentat-cli/commands"
+	"github.com/Mentatious/mentat-cli/io/format"
+	"github.com/ybbus/jsonrpc"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func main() {

@@ -1,10 +1,11 @@
 package commands
 
 import (
+	"strings"
+
 	"github.com/Mentatious/mentat-cli/io"
 	"github.com/Mentatious/mentat-cli/schema"
 	"github.com/ybbus/jsonrpc"
-	"strings"
 )
 
 // Search ...

@@ -2,10 +2,11 @@ package format
 
 import (
 	"encoding/json"
-	"github.com/Mentatious/mentat-cli/io"
-	"github.com/Mentatious/mentat-cli/schema"
 	"io/ioutil"
 	"os"
+
+	"github.com/Mentatious/mentat-cli/io"
+	"github.com/Mentatious/mentat-cli/schema"
 )
 
 const (

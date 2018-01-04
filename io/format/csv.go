@@ -2,10 +2,11 @@ package format
 
 import (
 	"encoding/csv"
-	"github.com/Mentatious/mentat-cli/io"
-	"github.com/Mentatious/mentat-cli/schema"
 	"os"
 	"strings"
+
+	"github.com/Mentatious/mentat-cli/io"
+	"github.com/Mentatious/mentat-cli/schema"
 )
 
 var (

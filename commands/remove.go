@@ -2,10 +2,11 @@ package commands
 
 import (
 	"errors"
+	"strings"
+
 	"github.com/Mentatious/mentat-cli/io"
 	"github.com/Mentatious/mentat-cli/schema"
 	"github.com/ybbus/jsonrpc"
-	"strings"
 )
 
 // Delete ... delete selected entries
