@@ -4,23 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"github.com/Mentatious/mentat-cli/commands"
 	"github.com/Mentatious/mentat-cli/io/format"
+	"github.com/wiedzmin/goodies"
 	"github.com/ybbus/jsonrpc"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func main() {
-	c := make(chan os.Signal, 2)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		fmt.Println("Caught ^C, exiting...")
-		os.Exit(1)
-	}()
+	goodies.HandleKeyboardInterrupt()
 
 	app := kingpin.New("mentat-cli", "Mentat command line client")
 	APIHost := app.Flag("apihost", "API host address").Short('a').Required().String()
